@@ -23,10 +23,13 @@ def readFile(textPath):
         temp=""+str(line)
         temp2 = temp[:(len(temp)-1)]
         imagePath = dirPath+temp2
-        print imagePath
-        checkFaceImage(imagePath,dirPath,temp2)
+        print (imagePath)
+        try:
+            checkFaceImage(imagePath,dirPath,temp2)
+        except Exception as e:
+            print(str(e))
         count = count + 1
-        time.sleep(1)
+        #time.sleep(1)
         print (count)
 
 
@@ -70,8 +73,8 @@ def checkFaceImage(imagePath,dirPath,nameimage):
 
 if __name__ == "__main__":
 	# Get user supplied values
-	#textPath = sys.argv[1]
-	textPath="data_pics/people/tokimngoc/raw/listpics.txt"
+	textPath = sys.argv[1]
+	#textPath="data_pics/people/tokimngoc/raw/listpics.txt"
 	readFile(textPath)
 
 
