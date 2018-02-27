@@ -91,8 +91,9 @@ if __name__ == "__main__":
     # Get user supplied values
     # #textPath = sys.argv[1]
     textPath="data_pics/people/tokimngoc/raw/listpics.txt"
-    #readFile(textPath)
-    find_uglies(textPath)
+    readFile(textPath)
+    #find_uglies(textPath)
+    #create_pos_n_neg(textPath)
 
 
 
