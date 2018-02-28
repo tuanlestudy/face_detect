@@ -24,7 +24,7 @@ def store_raw_images():
     s7 = "http://image-net.org/api/text/imagenet.synset.geturls?wnid=n00015388"
 
     folder="neg"
-    neg_images_link = s3
+    neg_images_link = s5
     neg_image_urls = urllib.urlopen(neg_images_link).read().decode()
 
     if not os.path.exists(folder):

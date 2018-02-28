@@ -1,10 +1,10 @@
 import cv2
-import numpy as nu
+import numpy as np
 import os
 import sys
 import shutil
 
-def faceDetect(textPath, dirPath, imgPath):
+def faceDetect(textPath, imgPath):
     temp=""
     count = 0
     num_lines = sum(1 for line in open(textPath))
@@ -17,7 +17,7 @@ def faceDetect(textPath, dirPath, imgPath):
             temp2 = temp[:(len(temp)-1)]
             imagePath = imgPath+temp2
             print (imagePath)
-            image2gray(imagePath,dirPath,temp2)
+            image2gray(imagePath,temp2)
             count += 1
             x += 1
         f.close()
@@ -25,55 +25,46 @@ def faceDetect(textPath, dirPath, imgPath):
         print(str(e))
     print (count)
 
-def image2gray(imagePath,dirPath,nameimage):
-    if not os.path.exists(dirPath+'neg'):
-        os.makedirs(dirPath+'neg')
+def image2gray(imagePath,nameimage):
+    if not os.path.exists('neg'):
+        os.makedirs('neg')
     try:
         img = cv2.imread(imagePath, cv2.IMREAD_GRAYSCALE)
         resized_image = cv2.resize(img,(100,100))
-        newgrayimage = dirPath+'neg/'+nameimage
+        newgrayimage = 'neg/'+nameimage
         cv2.imwrite(newgrayimage, resized_image)
     except Exception as e:
         print(str(e))
 
 
 
-def create_pos_n_neg(textPath, dirPath):
-    for file_type in [dirPath+'neg']:
-        
+def create_pos_n_neg():
+    for file_type in ['neg']:
         for img in os.listdir(file_type):
-
-            if file_type == (dirPath+'pos'):
-                line = dirPath+file_type+'/'+img+' 1 0 0 50 50\n'
-                with open(dirPath+'info.dat','a') as f:
+            if file_type == ('pos'):
+                line = file_type+'/'+img+' 1 0 0 50 50\n'
+                with open('info.dat','a') as f:
                     f.write(line)
-            elif file_type == (dirPath+'neg'):
-                line = dirPath+file_type+'/'+img+'\n'
-                with open(dirPath+'bg.txt','a') as f:
+            elif file_type == ('neg'):
+                line = file_type+'/'+img+'\n'
+                with open('bg.txt','a') as f:
                     f.write(line)
 
 if __name__ == "__main__":
     # Get user supplied values
-    textPath = sys.argv[1]
-    #textPath="data_pics/people/tokimngoc/raw/list.txt"
-
+    #textPath = sys.argv[1]
+    textPath="pics/list.txt"
+    imgPath=""
     i=len(textPath)-1
     while i > 0:
-    	if(textPath[i]=='/'):
-    		dirPath=textPath[:i-4]
-    		break
-        i=i-1
-    
-    i=len(textPath)-1
-    while i > 0:
-    	if(textPath[i]=='/'):
-    		imgPath=textPath[:i+1]
-    		break
+        if(textPath[i]=='/'):
+            imgPath=textPath[:i+1]
+            break
         i=i-1
 
-    faceDetect(textPath, dirPath, imgPath)
+    #faceDetect(textPath, imgPath)
     #find_uglies(textPath)
-    #create_pos_n_neg(textPath)
+    create_pos_n_neg()
 
 
 
@@ -81,9 +72,9 @@ if __name__ == "__main__":
 def find_uglies(textPath, dirPath):
     i=len(textPath)-1
     while i > 0:
-    	if(textPath[i]=='/'):
-    		dirPath=textPath[:i+1]
-    		break
+        if(textPath[i]=='/'):
+            dirPath=textPath[:i+1]
+            break
         i=i-1
     match = False
     if not os.path.exists(dirPath+'uglies'):

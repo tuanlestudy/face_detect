@@ -6,7 +6,7 @@ import shutil
 import os
 #------------------------------------------------
 
-def faceDetect(textPath, dirPath, imgPath):
+def faceDetect(textPath, imgPath):
     temp=""
     count = 0
     countface = 0
@@ -20,7 +20,7 @@ def faceDetect(textPath, dirPath, imgPath):
             temp2 = temp[:(len(temp)-1)]
             imagePath = imgPath+temp2
             print (imagePath)
-            countface += checkFaceImage(imagePath,dirPath,temp2)
+            countface += checkFaceImage(imagePath,temp2)
             count += 1
             x += 1
         f.close()
@@ -32,13 +32,15 @@ def faceDetect(textPath, dirPath, imgPath):
 
 
 
-def checkFaceImage(imagePath,dirPath,nameimage):
+def checkFaceImage(imagePath,nameimage):
 
     countface = 0
 
     # Create the haar cascade
     face_cascade = cv2.CascadeClassifier("haarcascade/haarcascade_frontalface_default.xml")
     #eye_cascade = cv2.CascadeClassifier("haarcascade/haarcascade_eye.xml")
+    #tokimngoc_cascade = cv2.CascadeClassifier("haarcascade/tokimngoc_cascade_20states.xml")
+    #face_cascade = tokimngoc_cascade
 
     # Read the image
     img = cv2.imread(imagePath)
@@ -50,53 +52,47 @@ def checkFaceImage(imagePath,dirPath,nameimage):
     # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
         #cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    	cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
     #print("Found {0} faces!".format(len(faces)))
 
     #crop image
     if(len(faces) > 0) :
         crop_img = img[y:y+h, x:x+w]
-        newcropimage = dirPath+"crop/"+nameimage
+        newcropimage = "crop/"+nameimage
         cv2.imwrite(newcropimage,crop_img)
-        newimage = dirPath+"pos/"+nameimage
+        newimage = "pos/"+nameimage
         #cv2.imwrite(newimage,img)
         shutil.copy2(imagePath,newimage)
         countface +=len(faces)
     else:
-        newimage = dirPath+"neg/"+nameimage
+        newimage = "neg/"+nameimage
         #cv2.imwrite(newimage,img)
         shutil.copy2(imagePath,newimage)
     return countface
 
-def mkdir(dirPath, text):
-    if not os.path.exists(dirPath+text):
-        os.makedirs(dirPath+text)
+def mkdir(text):
+    if not os.path.exists(text):
+        os.makedirs(text)
 
 if __name__ == "__main__":
-	# Get user supplied values
-    textPath = sys.argv[1]
-    #textPath="data_pics/people/tokimngoc/raw/list.txt"
-    
+    # Get user supplied values
+    #textPath = sys.argv[1]
+    textPath="pics/list.txt"
+    imgPath=""
+
     i=len(textPath)-1
     while i > 0:
-    	if(textPath[i]=='/'):
-    		dirPath=textPath[:i-4]
-    		break
-        i=i-1
-    
-    i=len(textPath)-1
-    while i > 0:
-    	if(textPath[i]=='/'):
-    		imgPath=textPath[:i+1]
-    		break
+        if(textPath[i]=='/'):
+            imgPath=""+textPath[:i+1]
+            break
         i=i-1
 
-    mkdir(dirPath, 'crop')
-    mkdir(dirPath, 'neg')
-    mkdir(dirPath, 'pos')
+    mkdir('crop')
+    mkdir('neg')
+    mkdir('pos')
 
-    faceDetect(textPath, dirPath, imgPath)
+    faceDetect(textPath, imgPath)
 
 
 

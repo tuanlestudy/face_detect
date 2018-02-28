@@ -4,11 +4,21 @@ https://pythonprogramming.net/haar-cascade-object-detection-python-opencv-tutori
 #use command "ls > list.txt" to create list file
 #check list.txt to delete end line
 
-#python faceDetec.py /pics/list.txt
+#python faceDetec.py
 ->it will create a folder with name "crop" contains the faces
 -> "pos" contains images found faces
 -> "neg" failed
 
-#python image2gray.py /pics/list.txt
+#python image2gray.py
 ->it will change image to black/white
 ->resize 100x100
+
+#python image5050.py ...jpg
+
+opencv_createsamples -img  image5050.jpg -bg bg.txt -info info/info.lst -pngoutput info -maxxangle 0.5 -maxyangle -0.5 -maxzangle 0.5 -num 2500
+
+opencv_createsamples -info info/info.lst -num 2500 -w 20 -h 20 -vec positives.vec
+
+opencv_traincascade -data data -vec positives.vec -bg bg.txt -numPos 1800 -numNeg 900 -numStates 10 -w 20 -h 20
+
+opencv_traincascade -data data -vec positives.vec -bg bg.txt -numPos 1800 -numNeg 900 -numStates 20 -w 20 -h 20
