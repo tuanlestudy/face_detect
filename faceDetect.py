@@ -75,13 +75,13 @@ def mkdir(dirPath, text):
 
 if __name__ == "__main__":
 	# Get user supplied values
-    #textPath = sys.argv[1]
-    textPath="data_pics/people/tokimngoc/raw/list.txt"
+    textPath = sys.argv[1]
+    #textPath="data_pics/people/tokimngoc/raw/list.txt"
     
     i=len(textPath)-1
     while i > 0:
     	if(textPath[i]=='/'):
-    		dirPath=textPath[:i-3]
+    		dirPath=textPath[:i-4]
     		break
         i=i-1
     
