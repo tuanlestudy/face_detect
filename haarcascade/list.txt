@@ -1,0 +1,16 @@
+275		haarcascade_eye_tree_eyeglasses.xml
+337 	haarcascade_eye.xml
+-		haarcascade_frontalcatface_extended.xml
+-		haarcascade_frontalcatface.xml
+167		haarcascade_frontalface_alt2.xml
+4		haarcascade_frontalface_alt_tree.xml
+149		haarcascade_frontalface_alt.xml
+193		haarcascade_frontalface_default.xml
+-		haarcascade_lefteye_2splits.xml
+-		haarcascade_licence_plate_rus_16stages.xml
+-		haarcascade_lowerbody.xml
+29		haarcascade_profileface.xml
+264		haarcascade_righteye_2splits.xml
+-		haarcascade_russian_plate_number.xml
+-		haarcascade_smile.xml
+-		haarcascade_upperbody.xml

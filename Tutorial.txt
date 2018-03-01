@@ -1,13 +1,10 @@
 https://pythonprogramming.net/haar-cascade-object-detection-python-opencv-tutorial/
 
 #copy images to folder "pics"
-#use command "ls > list.txt" to create list file
-#check list.txt to delete end line
 
 #python faceDetec.py
 ->it will create a folder with name "crop" contains the faces
 -> "pos" contains images found faces
--> "neg" failed
 
 #python image2gray.py
 ->it will change image to black/white

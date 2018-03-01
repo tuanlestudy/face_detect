@@ -6,41 +6,43 @@ import shutil
 import os
 #------------------------------------------------
 
-def faceDetect(textPath, imgPath):
-    temp=""
-    count = 0
+def facedetect():
+    countfaces = 0
+
+    cascade_faces = [
+    "haarcascade_frontalface_default.xml",
+    "haarcascade_frontalface_alt.xml",
+    "haarcascade_frontalface_alt2.xml",
+    "haarcascade_frontalface_alt_tree.xml",
+    "haarcascade_profileface.xml"]
+    for i in cascade_faces:
+        print(i)
+        for file_type in ['pics']:
+            for img in os.listdir(file_type):
+                imagePath = file_type+'/'+img
+                cascadePath = "haarcascade/"+i  
+                countfaces += checkFaceImage(imagePath, img, cascadePath, 0)
+
+    cascade_eyes = [
+    "haarcascade_eye_tree_eyeglasses.xml",
+    "haarcascade_eye.xml",
+    "haarcascade_righteye_2splits.xml"]
+    for i in cascade_eyes:
+        print(i)
+        for file_type in ['pics']:
+            for img in os.listdir(file_type):
+                imagePath = file_type+'/'+img
+                cascadePath = "haarcascade/"+i  
+                countfaces += checkFaceImage(imagePath, img, cascadePath, 1)
+
+    
+    #print ('Total Pictures: ' + str(count))
+    print ('Found:          ' + str(countfaces) + ' faces')
+
+
+def checkFaceImage(imagePath,nameimage, cascadePath, check):
     countface = 0
-    num_lines = sum(1 for line in open(textPath))
-    try:
-        f = file(textPath, "r")
-        #line = f.readline()
-        for x in range(0,num_lines):
-            line = f.readline()
-            temp=""+str(line)
-            temp2 = temp[:(len(temp)-1)]
-            imagePath = imgPath+temp2
-            print (imagePath)
-            countface += checkFaceImage(imagePath,temp2)
-            count += 1
-            x += 1
-        f.close()
-    except Exception as e:
-        print(str(e))
-    print ("Total: " + str(count) + " pictures")
-    print ("Found: " + str(countface) + " faces")
-
-
-
-
-def checkFaceImage(imagePath,nameimage):
-
-    countface = 0
-
-    # Create the haar cascade
-    face_cascade = cv2.CascadeClassifier("haarcascade/haarcascade_frontalface_default.xml")
-    #eye_cascade = cv2.CascadeClassifier("haarcascade/haarcascade_eye.xml")
-    #tokimngoc_cascade = cv2.CascadeClassifier("haarcascade/tokimngoc_cascade_20states.xml")
-    #face_cascade = tokimngoc_cascade
+    face_cascade = cv2.CascadeClassifier(cascadePath)
 
     # Read the image
     img = cv2.imread(imagePath)
@@ -58,17 +60,24 @@ def checkFaceImage(imagePath,nameimage):
 
     #crop image
     if(len(faces) > 0) :
-        crop_img = img[y:y+h, x:x+w]
-        newcropimage = "crop/"+nameimage
-        cv2.imwrite(newcropimage,crop_img)
-        newimage = "pos/"+nameimage
+        if(check == 0):
+            crop_img = img[y:y+h, x:x+w]
+            newcropimage = "crop/"+nameimage
+            cv2.imwrite(newcropimage,crop_img)
+
+        newimagePath = "pos/"+nameimage
+        imageShow = cv2.imread(imagePath)
+        cv2.imshow("Pictures", cv2.resize(imageShow, (240, 320)))
+        cv2.waitKey(100)
         #cv2.imwrite(newimage,img)
-        shutil.copy2(imagePath,newimage)
+        #shutil.copy2(imagePath,newimage)
+        #os.rename("path/to/current/file.foo", "path/to/new/desination/for/file.foo")
+        shutil.move(imagePath, newimagePath)
         countface +=len(faces)
     else:
         newimage = "neg/"+nameimage
         #cv2.imwrite(newimage,img)
-        shutil.copy2(imagePath,newimage)
+        #shutil.copy2(imagePath,newimage)
     return countface
 
 def mkdir(text):
@@ -76,23 +85,7 @@ def mkdir(text):
         os.makedirs(text)
 
 if __name__ == "__main__":
-    # Get user supplied values
-    #textPath = sys.argv[1]
-    textPath="pics/list.txt"
-    imgPath=""
-
-    i=len(textPath)-1
-    while i > 0:
-        if(textPath[i]=='/'):
-            imgPath=""+textPath[:i+1]
-            break
-        i=i-1
-
-    mkdir('crop')
-    mkdir('neg')
-    mkdir('pos')
-
-    faceDetect(textPath, imgPath)
+    facedetect()
 
 
 
