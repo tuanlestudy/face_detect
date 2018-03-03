@@ -63,7 +63,8 @@ def checkFaceImage(imagePath,nameimage, cascadePath, check):
         if(check == 0):
             crop_img = img[y:y+h, x:x+w]
             newcropimage = "crop/"+nameimage
-            cv2.imwrite(newcropimage,crop_img)
+            grayface = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+            cv2.imwrite(newcropimage,grayface)
 
         newimagePath = "pos/"+nameimage
         imageShow = cv2.imread(imagePath)
